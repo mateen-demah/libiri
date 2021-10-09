@@ -1,10 +1,12 @@
 # libiri
-
-All of mobile money in one place, off the internet
+! not finished
+All of mobile money in one place, off the internet.
+this app, when completed, would allow Ghanaians to make and receive mobile money payments to and from any network. all completely offline.
+this is meant to boost the use of cashless payments by small to large scale retail shops.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is uncompleted so to try it out you'd have to install flutter, download the source code and build the apk.
 
 A few resources to get you started if this is your first Flutter project:
 
