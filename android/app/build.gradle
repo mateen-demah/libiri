@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -58,6 +58,15 @@ flutter {
     source '../..'
 }
 
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://maven.usehover.com/releases'
+        allowInsecureProtocol = true
+        }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation('com.hover:android-sdk:1.7.3') { transitive = true; }
 }

@@ -26,8 +26,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: HistoryProvider(),),
-        ChangeNotifierProvider.value(value: InfoProvider(),),
+        ChangeNotifierProvider.value(
+          value: HistoryProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: InfoProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Libiri',
@@ -58,9 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _getSimData() async {
     var status = await Permission.phone.status;
     if (!status.isGranted) {
-      bool isGranted = await Permission.phone
-          .request()
-          .isGranted;
+      bool isGranted = await Permission.phone.request().isGranted;
       if (!isGranted) return;
     }
     simData = await SimDataPlugin.getSimData();
@@ -77,41 +79,42 @@ class _MyHomePageState extends State<MyHomePage> {
     final infoData = Provider.of<InfoProvider>(context);
 
     final appBar = AppBar(
-      title: Center(child: Text(widget.title)),
+      title: Text(widget.title),
       actions: [
         SelectActiveSim(),
       ],
     );
     final screenHeight =
-        MediaQuery
-            .of(context)
-            .size
-            .height - appBar.preferredSize.height;
+        MediaQuery.of(context).size.height - appBar.preferredSize.height;
 
     // updating sim info
     if (simData != null) {
       for (SimCard sim in simData.cards) {
-        infoData.updateInfo("operator${sim.slotIndex + 1}", sim.carrierName, notify:false);
-        infoData.updateInfo("numOfSims", simData.cards.length, notify:false);
+        infoData.updateInfo("operator${sim.slotIndex + 1}", sim.carrierName,
+            notify: false);
+        infoData.updateInfo("numOfSims", simData.cards.length, notify: false);
+        print('${sim.mcc}, ${sim.mnc}, ${sim.serialNumber}');
       }
     }
+    print('===================================');
+    print(infoData.info);
 
-      return Scaffold(
-        appBar: appBar,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            UserInfo(screenHeight),
-            TxHistory(screenHeight),
-            Row(
-              children: <Widget>[
-                MainButton("Send", screenHeight),
-                MainButton("Pay", screenHeight),
-                MainButton("Withdraw", screenHeight),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
+    return Scaffold(
+      appBar: appBar,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          UserInfo(screenHeight),
+          TxHistory(screenHeight),
+          Row(
+            children: <Widget>[
+              MainButton("Send", screenHeight),
+              MainButton("Pay", screenHeight),
+              MainButton("Withdraw", screenHeight),
+            ],
+          ),
+        ],
+      ),
+    );
   }
+}

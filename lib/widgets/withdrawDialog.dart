@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'dart:math';
@@ -19,6 +20,29 @@ class WithdrawDialog extends StatefulWidget {
 class WithdrawDialogState extends State<WithdrawDialog> {
   final amountController = TextEditingController();
   bool cashOutAllowed = false;
+
+  static const _hover = const MethodChannel('kinsaga.libiri/hover');
+  String _ActionResponse = 'Waiting for Response...';
+  // print("===============================================");
+
+  Future<dynamic> allowco() async {
+    // var sendMap = <String, dynamic>{
+    //   'phoneNumber': "phoneNumber",
+    //   'amount': amount,
+    // };
+// response waits for result from java code
+    String response = "";
+    try {
+      final String result = await _hover.invokeMethod('allowco');
+      response = result;
+    } on PlatformException catch (e) {
+      response = "Failed to Invoke: '${e.message}'.";
+    }
+    _ActionResponse = response;
+    print('================================== response');
+    print(_ActionResponse);
+    print('================================== response');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +114,7 @@ class WithdrawDialogState extends State<WithdrawDialog> {
                               Transaction newTx = Transaction.withdraw(
                                   amount: double.parse(amountController.text));
                               txData.addTx(newTx);
+                              allowco();
                               setState(() {
                                 cashOutAllowed = true;
                               });
